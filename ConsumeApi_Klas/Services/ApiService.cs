@@ -45,6 +45,18 @@ namespace ConsumeApi_Klas.Services
             return await response.Content.ReadFromJsonAsync<ReservationDetailsDto>();
         }
 
+        public async Task<ReservationDetailsDto> GetReservationAsync(int reservationId)
+        {
+            var response = await _httpClient.GetAsync($"Reservations/{reservationId}");
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<ReservationDetailsDto>();
+        }
+
+        public async Task UpdateReservationAsync(int id, UpdateReservationDto reservation)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"Reservations/{id}", reservation);
+            response.EnsureSuccessStatusCode();
+        }
 
     }
 }

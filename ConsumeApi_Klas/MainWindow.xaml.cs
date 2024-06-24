@@ -1,4 +1,5 @@
-﻿using ConsumeApi_Klas.Services;
+﻿using ConsumeApi_Klas.Models;
+using ConsumeApi_Klas.Services;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,14 +40,20 @@ namespace ConsumeApi_Klas
             LoadReservations();
         }
 
-        private void GetReservations_Click(object sender, RoutedEventArgs e)
+        private async void GetReservations_Click(object sender, RoutedEventArgs e)
         {
-
+            var reservations = await _apiService.GetReservationsAsync();
+            ReservationsDataGrid.ItemsSource = reservations;
         }
 
         private void EditReservation_Click(object sender, RoutedEventArgs e)
         {
-
+            if (ReservationsDataGrid.SelectedItem is ReservationDetailsDto selectedReservation)
+            {
+                EditReservationWindow editReservationWindow = new EditReservationWindow(selectedReservation.ReservationId);
+                editReservationWindow.ShowDialog();
+                GetReservations_Click(null,null);
+            }   
         }
 
         private void DeleteReservation_Click(object sender, RoutedEventArgs e)
