@@ -19,6 +19,15 @@ namespace ConsumeApi_Klas.Services
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://localhost:7157/api/");
         }
+
+        public async Task<IEnumerable<CustomerDto>> GetCustomersAsync()
+        {
+
+           var response = await _httpClient.GetAsync("Customers");
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadFromJsonAsync<IEnumerable<CustomerDto>>();
+        }
         public async Task<IEnumerable<ReservationDetailsDto>> GetReservationsAsync()
         {
 
@@ -28,5 +37,14 @@ namespace ConsumeApi_Klas.Services
             return await response.Content.ReadFromJsonAsync<IEnumerable<ReservationDetailsDto>>();
 
         }
+
+        public async Task<ReservationDetailsDto> CreateReservationAsync(CreateReservationDto reservation)
+        {
+           var response = await _httpClient.PostAsJsonAsync("Reservations", reservation);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<ReservationDetailsDto>();
+        }
+
+
     }
 }
