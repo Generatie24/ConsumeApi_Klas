@@ -56,9 +56,31 @@ namespace ConsumeApi_Klas
             }   
         }
 
-        private void DeleteReservation_Click(object sender, RoutedEventArgs e)
+        private async void DeleteReservation_Click(object sender, RoutedEventArgs e)
         {
-
+            if (ReservationsDataGrid.SelectedItem is ReservationDetailsDto selectedReservation)
+            {
+                var result = MessageBox.Show("Are you sure you want to delete this reservation?", 
+                    "Confirm Delete", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        await _apiService.DeleteReservationAsync(selectedReservation.ReservationId);
+                        MessageBox.Show("Reservation deleted successfully.");
+                        LoadReservations(); 
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error deleting reservation: {ex.Message}");
+                        Console.WriteLine(ex.ToString()); 
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a reservation to delete.");
+            }
         }
     }
 }

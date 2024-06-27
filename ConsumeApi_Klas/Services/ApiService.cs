@@ -58,5 +58,10 @@ namespace ConsumeApi_Klas.Services
             response.EnsureSuccessStatusCode();
         }
 
+        public async Task DeleteReservationAsync(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"Reservations/{id}");
+            response.EnsureSuccessStatusCode();
+        }
     }
 }
